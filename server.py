@@ -1,8 +1,11 @@
 from flask import Flask, request, jsonify
 import yt_dlp
 from flask_cors import CORS
+import os  # 🔹 Import os to get the port from the environment
+
 app = Flask(__name__)
 CORS(app)  # 🔹 This allows requests from any frontend
+
 @app.route('/get_video', methods=['GET'])
 def get_video():
     video_id = request.args.get('video_id')
@@ -30,4 +33,5 @@ def get_video():
         return jsonify({"error": str(e)}), 500
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    PORT = int(os.environ.get("PORT", 5000))  # 🔹 Use Railway’s assigned port
+    app.run(host="0.0.0.0", port=PORT)  # 🔹 Required for Railway
